@@ -8,7 +8,7 @@ const StarshipList = ({ starships }) => {
                 return (
                     <StarshipCard
                     key={i} 
-                    name={starships[i].name} 
+                    name={starships[i].name.toLowerCase()} 
                     starship_class={starships[i].starship_class}
                     cost_in_credits={starships[i].cost_in_credits} 
                     length={starships[i].length} 

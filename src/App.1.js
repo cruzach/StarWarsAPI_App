@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
-import StarshipList from './Components/starshipList';
-import SearchBox from './Components/searchBox';
-import Selection from './Components/Selection';
+import StarshipList from './starshipList.js';
+import SearchBox from './searchBox.js';
+import Selection from './Selection.js';
 import Particles from 'react-particles-js';
-import PersonsList from './Components/personsList';
-import PlanetList from './Components/planetList';
-import VehiclesList from './Components/vehiclesList';
-import FilmList from './Components/filmList';
-import SpeciesList from './Components/speciesList';
-import Navigation from './Components/Navigation';
+import PersonsList from './personsList';
+import PlanetList from './planetList';
 
 const particlesOptions = {
   particles: {
@@ -71,23 +67,14 @@ class App extends Component {
 
   render() {
     const {results,searchfield,route} = this.state;
+    const resultsFiltered = results.filter(result => {
+      return result.name.toLowerCase().includes(searchfield.toLowerCase());
+    });
     if(this.state.route !== 'selection'){
       fetch(`https://swapi.co/api/${this.state.route}/`)
     .then(response => response.json())
     .then(data => this.setState({results:data.results}));
     }
-    if(route === 'films'){
-      var resultsFiltered = results.filter(result => {
-        return result.title.toLowerCase().includes(searchfield.toLowerCase());
-      });
-    } else {
-      var resultsFiltered = results.filter(result => {
-        return result.name.toLowerCase().includes(searchfield.toLowerCase());
-      });
-    }
-    if(results.length === 0 && route !== 'selection'){
-      return <h1 className='tc pt6'>Loading...</h1>
-    } else {
     switch (route) {
       case 'selection':
         return(
@@ -103,7 +90,6 @@ class App extends Component {
       case 'people':
         return(
           <div className="tc">
-            <Navigation onButtonSelection={this.onButtonSelection}/>
             <h1 className='f1'>Star Wars</h1>
             <h2>Search for your favorite people!</h2>
               <SearchBox searchChange={this.onSearchChange}/>
@@ -113,7 +99,6 @@ class App extends Component {
       case 'planets':
         return(
           <div className="tc">
-            <Navigation onButtonSelection={this.onButtonSelection}/>
             <h1 className='f1'>Star Wars</h1>
             <h2>Search for your favorite planet!</h2>
               <SearchBox searchChange={this.onSearchChange}/>
@@ -121,39 +106,14 @@ class App extends Component {
           </div>
         );
       case 'films':
-        return(
-          <div className="tc">
-            <Navigation onButtonSelection={this.onButtonSelection}/>  
-            <h1 className='f1'>Star Wars</h1>
-            <h2>Search for your favorite film!</h2>
-              <SearchBox searchChange={this.onSearchChange}/>
-              <FilmList films={resultsFiltered}/>
-          </div>
-        );
+
       case 'species':
-        return(
-          <div className="tc">
-            <Navigation onButtonSelection={this.onButtonSelection}/>
-            <h1 className='f1'>Star Wars</h1>
-            <h2>Search for your favorite species!</h2>
-              <SearchBox searchChange={this.onSearchChange}/>
-              <SpeciesList species={resultsFiltered}/>
-          </div>
-        );
+
       case 'vehicles':
-        return(
-          <div className="tc">
-            <Navigation onButtonSelection={this.onButtonSelection}/>
-            <h1 className='f1'>Star Wars</h1>
-            <h2>Search for your favorite vehicle!</h2>
-              <SearchBox searchChange={this.onSearchChange}/>
-              <VehiclesList vehicles={resultsFiltered}/>
-          </div>
-        );
+
       case 'starships':
         return(
           <div className="tc">
-            <Navigation onButtonSelection={this.onButtonSelection}/>
             <h1 className='f1'>Star Wars</h1>
             <h2>Search for your favorite starship!</h2>
               <SearchBox searchChange={this.onSearchChange}/>
@@ -161,8 +121,10 @@ class App extends Component {
           </div>
         );
     }
-  }
-    
+
+    if (route === 'home'){
+      
+    }
 
     
   }
